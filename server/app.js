@@ -15,6 +15,7 @@ const userRoute = require('./components/Users/user.route')
 //use routes
 app.use('/board',boardRoute)
 app.use('/user',userRoute)
-const server = http.createServer(app);
-const port = 3001;
-server.listen(port);
+const PORT = process.env.PORT||3001
+app.listen(PORT,()=>{
+    console.log(`App listen port: ${PORT}`)
+})

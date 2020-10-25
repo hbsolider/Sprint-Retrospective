@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const URL = process.env.DBURL;
+const URL = process.env.MONGODB_URI;
 module.exports = {
   connectOnce: () => {
     //connect

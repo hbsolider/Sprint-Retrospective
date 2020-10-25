@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const boardModel = require("../../models/board");
-const userModel = require("../../models/user");
+// const userModel = require("../../models/user");
 router.get("/", async (req, res) => {
   await boardModel
     .find({ userId: req.body.userId })
