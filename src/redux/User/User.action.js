@@ -23,7 +23,7 @@ UserAction.login = ({ username, password }) => {
           localStorage.setItem("token", res.token);
           localStorage.setItem("user", res.user);
           dispatch(loginSuccess(res.user));
-          window.location.href='/'
+          window.location.href = process.env.PUBLIC_URL+'/';
         }
       })
       .catch((err) => {
@@ -31,13 +31,13 @@ UserAction.login = ({ username, password }) => {
       });
   };
 };
-UserAction.logout=()=>{
-    return dispatch =>{
-    console.log('hihi')
+UserAction.logout = () => {
+  return (dispatch) => {
+    console.log("hihi");
 
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        dispatch({type:USER.LOGOUT})
-    }
-}
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch({ type: USER.LOGOUT });
+  };
+};
 export default UserAction;
