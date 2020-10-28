@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/Sprint-Retrospective/static/css/main.fd19d239.chunk.css",
+    "main.js": "/Sprint-Retrospective/static/js/main.9c670a11.chunk.js",
+    "main.js.map": "/Sprint-Retrospective/static/js/main.9c670a11.chunk.js.map",
+    "runtime-main.js": "/Sprint-Retrospective/static/js/runtime-main.86cb14fc.js",
+    "runtime-main.js.map": "/Sprint-Retrospective/static/js/runtime-main.86cb14fc.js.map",
+    "static/css/2.00a338ba.chunk.css": "/Sprint-Retrospective/static/css/2.00a338ba.chunk.css",
+    "static/js/2.020269ea.chunk.js": "/Sprint-Retrospective/static/js/2.020269ea.chunk.js",
+    "static/js/2.020269ea.chunk.js.map": "/Sprint-Retrospective/static/js/2.020269ea.chunk.js.map",
+    "index.html": "/Sprint-Retrospective/index.html",
+    "precache-manifest.2996523543fab7a823a2e8fafb230d87.js": "/Sprint-Retrospective/precache-manifest.2996523543fab7a823a2e8fafb230d87.js",
+    "service-worker.js": "/Sprint-Retrospective/service-worker.js",
+    "static/css/2.00a338ba.chunk.css.map": "/Sprint-Retrospective/static/css/2.00a338ba.chunk.css.map",
+    "static/css/main.fd19d239.chunk.css.map": "/Sprint-Retrospective/static/css/main.fd19d239.chunk.css.map",
+    "static/js/2.020269ea.chunk.js.LICENSE.txt": "/Sprint-Retrospective/static/js/2.020269ea.chunk.js.LICENSE.txt",
+    "static/media/sort.svg": "/Sprint-Retrospective/static/media/sort.75f0ef31.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.86cb14fc.js",
+    "static/css/2.00a338ba.chunk.css",
+    "static/js/2.020269ea.chunk.js",
+    "static/css/main.fd19d239.chunk.css",
+    "static/js/main.9c670a11.chunk.js"
+  ]
+}
