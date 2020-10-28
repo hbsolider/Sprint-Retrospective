@@ -23,7 +23,7 @@ UserAction.login = ({ username, password }) => {
           localStorage.setItem("token", res.token);
           localStorage.setItem("user", res.user);
           dispatch(loginSuccess(res.user));
-          window.location.href='/Sprint-Retrospective'
+          window.location.href='/'
         }
       })
       .catch((err) => {

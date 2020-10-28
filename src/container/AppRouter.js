@@ -16,11 +16,11 @@ function AppRouter(props) {
       <Navbar />
       <Switch>
         <div className="main">
-          <Route exact path="/Sprint-Retrospective/user" component={User} />
-          <ProtectedRoute exact path="/Sprint-Retrospective/" Component={Dashboard} {...props} />
+          <Route exact path="/user" component={User} />
+          <ProtectedRoute exact path="/" Component={Dashboard} {...props} />
           <ProtectedRoute
             exact
-            path="/Sprint-Retrospective/dashboard"
+            path="/dashboard"
             Component={Dashboard}
             {...props}
           />
@@ -40,7 +40,7 @@ const ProtectedRoute = ({ Component, user, path, Compo, ...rest }) => {
             <Component {...props} />
           </>
         ) : (
-          <Redirect to="/Sprint-Retrospective/user" />
+          <Redirect to="/user" />
         );
       }}
       {...rest}
