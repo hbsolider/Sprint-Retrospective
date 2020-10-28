@@ -33,7 +33,7 @@ function Navbar(props) {
     <Nav>
       <Row gutter={16} style={{ width: "100%" }}>
         <Col span={4}>
-          <Link to="/">
+          <Link to="/Sprint-Retrospective">
             <TextLogo>FunRetro</TextLogo>
           </Link>
         </Col>
