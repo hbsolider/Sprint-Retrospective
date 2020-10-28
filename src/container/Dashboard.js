@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 // import styled from "styled-components";
 import Section from "../components/Section";
-import { Space, Typography, Divider, Input, Row, Col } from "antd";
+import { Space, Typography, Divider, Row, Col } from "antd";
 import styled from "styled-components";
 import Sort from "../assets/icons/sort.svg";
-import AddBoard from './Board/AddBoard'
-const { Search } = Input;
+import ListBoard from "../container/Board";
 const { Title } = Typography;
 
 const Control = styled.div`
@@ -18,10 +17,7 @@ const Img = styled.img`
   transform: ${({ isAccending }) =>
     isAccending ? "rotate(180deg)" : "rotate(0deg)"};
 `;
-const BoardContainer = styled.div`
-  display: flex;
-`;
-const Dashboard = () => {
+const Dashboard = (props) => {
   const [isAccending, setAccending] = useState(false);
   const onClickAccending = () => {
     setAccending(!isAccending);
@@ -42,17 +38,15 @@ const Dashboard = () => {
                   alt=""
                   isAccending={isAccending}
                   onClick={onClickAccending}
-                ></Img>
+                />
               </Space>
             </Col>
 
-            <Col span={8} offset={8}>
-              <Search placeholder="Search board" />
-            </Col>
+            <Col span={8} offset={8}></Col>
           </Row>
         </Control>
         <Divider style={{ margin: "10px 0px" }} />
-        <AddBoard/>
+        <ListBoard />
       </Section>
     </>
   );

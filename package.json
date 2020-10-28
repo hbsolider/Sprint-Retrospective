@@ -10,6 +10,7 @@
     "axios": "^0.21.0",
     "dotenv": "^8.2.0",
     "framer-motion": "^2.9.4",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -17,14 +18,14 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.4",
     "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "serv":"cd server && npm run dev"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

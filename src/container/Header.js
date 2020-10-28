@@ -13,7 +13,6 @@ const HeaderText = styled.h4`
   padding: 0;
   margin: 0;
   font-size: 1.15em;
-  font-weight: bold;
   text-transform: capitalize;
   cursor: pointer;
   border-bottom: ${({ active }) => (active ? "2px solid black" : "none")};
@@ -25,7 +24,7 @@ const HeaderText = styled.h4`
     transition: transform 250ms ease-in-out;
   }
   &:hover:after {
-    transform: ${({active})=>active?'scaleX(0)':'scaleX(1)'};
+    transform: ${({ active }) => (active ? "scaleX(0)" : "scaleX(1)")};
   }
 `;
 const Header = () => {
@@ -34,9 +33,13 @@ const Header = () => {
   const [active, setActive] = useState(null);
   useEffect(() => {
     let path = pathname.split("/");
-    let index = cate.indexOf(path[1]);
-    setActive(index);
-  },[cate,pathname]);
+    if (path[1] === "") {
+      setActive(0);
+    } else {
+      let index = cate.indexOf(path[1]);
+      setActive(index);
+    }
+  }, [cate, pathname]);
   const onClick = (i) => {};
   return (
     <>
