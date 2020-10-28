@@ -1,5 +1,5 @@
 import BOARD from "./constants";
-import BoardApi from '../../services/BoardAPI'
+import BoardApi from '../../services/boardAPI'
 export const fetchBoard = () => {
   const fetch =(data)=> ({type:BOARD.FETCH,payload:data});
   return dispatch =>{
