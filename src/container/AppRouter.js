@@ -16,11 +16,11 @@ function AppRouter(props) {
       <Navbar />
       <Switch>
         <div className="main">
-          <Route exact path="/user" component={User} />
-          <ProtectedRoute exact path="/" Component={Dashboard} {...props} />
+          <Route exact path={process.env.PUBLIC_URL+"/user"} component={User} />
+          <ProtectedRoute exact path={process.env.PUBLIC_URL+"/"} Component={Dashboard} {...props} />
           <ProtectedRoute
             exact
-            path="/dashboard"
+            path={process.env.PUBLIC_URL+"/dashboard"}
             Component={Dashboard}
             {...props}
           />
@@ -40,7 +40,7 @@ const ProtectedRoute = ({ Component, user, path, Compo, ...rest }) => {
             <Component {...props} />
           </>
         ) : (
-          <Redirect to="/user" />
+          <Redirect to={process.env.PUBLIC_URL+"/user"} />
         );
       }}
       {...rest}
