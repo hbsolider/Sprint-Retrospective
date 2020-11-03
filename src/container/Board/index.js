@@ -1,41 +1,86 @@
 import React, { useEffect } from "react";
+import { Typography } from "antd";
+import Column from "./Column";
 import styled from "styled-components";
-import Board from "./Board";
-import AddBoard from "./AddBoard";
-import { fetchBoard } from "../../redux/Board/Board.action";
 import { connect } from "react-redux";
+import { fetchBoardData } from "../../redux/Board/Board.action";
+import { useParams } from "react-router-dom";
+import { DragDropContext } from "react-beautiful-dnd";
+const { Title } = Typography;
 
-const List = styled.div`
+const CoverColumn = styled.div`
   display: flex;
-  align-items: center;
-  background-color: white;
-  justify-content:flex-start;
-  flex-wrap:wrap;
 `;
-const ListBoard = (props) => {
-  useEffect(props.fetchBoard, []);
+const Control = styled.div`
+  padding: 5px 30px;
+  border: 1px solid black;
+  background-color: #bbbfca;
+`;
+const Center = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+`;
+function ViewBoard(props) {
+  const param = useParams();
+  const color = ["rgb(156,39,176)", "rgb(0,150,136)", "rgb(233,30,99)"];
+  const fetchBoardData = () => {
+    props.fetchBoardData(param.boardId);
+  };
+  const dragEnd = (e) => {
+  };
+  useEffect(fetchBoardData, []);
   return (
-    <List>
-      <AddBoard />
-      {props.listBoard.map((e, i) => (
-        <Board {...e} key={i} />
-      ))}
-    </List>
+    <>
+      <Control>
+        <Title level={5} style={{ margin: "0px" }}>
+          {props.title}
+        </Title>
+      </Control>
+      <CoverColumn>
+        {props.isfetching ? (
+          <Center>
+            <img
+              src="https://media0.giphy.com/media/kocrNZBTlCiQw/source.gif"
+              alt="load"
+            />
+          </Center>
+
+        ) : (
+          <DragDropContext onDragEnd={dragEnd}>
+            {props.column.map((e, i) => (
+              <Column
+                color={color[i]}
+                key={i}
+                index={i}
+                isaddCard={props.isaddCard[i]}
+                boardId={param.boardId}
+                {...e}
+              />
+            ))}
+          </DragDropContext>
+        )}
+      </CoverColumn>
+    </>
   );
-};
+}
 const mapStateToProps = (state) => ({
-  listBoard: state.board.listBoard,
+  column: state.board.column,
+  isfetching: state.board.isfetching,
+  isaddCard: state.board.isaddCard,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchBoard: () => {
-      dispatch(fetchBoard());
+    fetchBoardData: (params) => {
+      dispatch(fetchBoardData(params));
     },
   };
 };
-const listBoardConnect = connect(
+const connectViewBoard = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ListBoard);
-export default listBoardConnect;
+)(ViewBoard);
+export default connectViewBoard;

@@ -4,7 +4,7 @@ import Section from "../components/Section";
 import { Space, Typography, Divider, Row, Col } from "antd";
 import styled from "styled-components";
 import Sort from "../assets/icons/sort.svg";
-import ListBoard from "../container/Board";
+import ListBoard from "../container/Board/ListBoard";
 const { Title } = Typography;
 
 const Control = styled.div`

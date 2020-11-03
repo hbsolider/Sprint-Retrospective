@@ -1,20 +1,41 @@
 import React from "react";
-import moment from 'moment'
+import moment from "moment";
+import { Link } from "react-router-dom";
 import { Card, Row, Col, Space } from "antd";
 import {
   ClockCircleOutlined,
-  SettingOutlined,
-  EditOutlined,
+  DeleteOutlined,
+  CopyOutlined,
 } from "@ant-design/icons";
-function Board({ dayCreated, cardAmount, ...props }) {
+
+function Board({ dayCreated, cardAmount, _id, ...props }) {
   return (
+    <Link
+      to={{
+        pathname: process.env.PUBLIC_URL + `/board/${_id}`,
+        state: {
+          title: props.title,
+        },
+      }}
+    >
       <Card
         title={props.title}
-        style={{ minWidth: "250px", border: "1px solid black",margin:'10px' }}
+        style={{ minWidth: "240px", border: "1px solid black", margin: "10px" }}
         hoverable={true}
         actions={[
-          <EditOutlined key="edit" />,
-          <SettingOutlined key="setting" />,
+          <CopyOutlined
+            key="edit"
+            style={{ zIndex: 100 }}
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          />,
+          <DeleteOutlined
+            key="setting"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          />,
         ]}
         size="small"
       >
@@ -22,7 +43,7 @@ function Board({ dayCreated, cardAmount, ...props }) {
           <Col span={14}>
             <Space>
               <ClockCircleOutlined />
-              {moment(dayCreated).format('DD/MM/YYYY') || "a few second"}
+              {moment(dayCreated).format("DD/MM/YYYY") || "a few second"}
             </Space>
           </Col>
           <Col span={10} style={{ textAlign: "end" }}>
@@ -30,6 +51,7 @@ function Board({ dayCreated, cardAmount, ...props }) {
           </Col>
         </Row>
       </Card>
+    </Link>
   );
 }
 

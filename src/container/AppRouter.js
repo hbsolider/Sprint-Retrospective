@@ -8,6 +8,7 @@ import {
 import Dashboard from "../container/Dashboard";
 import Header from "../container/Header";
 import User from "../container/User";
+import Board from "../container/Board";
 import { connect } from "react-redux";
 import Navbar from "./Navbar";
 function AppRouter(props) {
@@ -15,32 +16,43 @@ function AppRouter(props) {
     <Router>
       <Navbar />
       <Switch>
-        <div className="main">
-          <Route exact path={process.env.PUBLIC_URL+"/user"} component={User} />
-          <ProtectedRoute exact path={process.env.PUBLIC_URL+"/"} Component={Dashboard} {...props} />
-          <ProtectedRoute
-            exact
-            path={process.env.PUBLIC_URL+"/dashboard"}
-            Component={Dashboard}
-            {...props}
-          />
-        </div>
+        <Route exact path={process.env.PUBLIC_URL + "/user"} component={User} />
+        <ProtectedRoute
+          exact
+          path={process.env.PUBLIC_URL + "/"}
+          Component={Dashboard}
+          {...props}
+        />
+        <ProtectedRoute
+          exact
+          path={process.env.PUBLIC_URL + "/dashboard"}
+          Component={Dashboard}
+          {...props}
+        />
+        <Route
+          exact
+          path={process.env.PUBLIC_URL + "/board/:boardId?"}
+          render={(props) => {
+            return <Board {...props} title={props.location.state.title} />;
+          }}
+        />
       </Switch>
     </Router>
   );
 }
-const ProtectedRoute = ({ Component, user, path, Compo, ...rest }) => {
+
+const ProtectedRoute = ({ Component, user, path, ...rest }) => {
   return (
     <Route
       path={path}
       render={(props) => {
         return user.loggedIn ? (
-          <>
+          <div className="main">
             <Header />
             <Component {...props} />
-          </>
+          </div>
         ) : (
-          <Redirect to={process.env.PUBLIC_URL+"/user"} />
+          <Redirect to={process.env.PUBLIC_URL + "/user"} />
         );
       }}
       {...rest}

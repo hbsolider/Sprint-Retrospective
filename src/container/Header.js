@@ -44,7 +44,7 @@ const Header = () => {
   return (
     <>
       <Row gutter={16}>
-        <Col span={8} offset={-16}>
+        <Col span={10} offset={-14}>
           <Headerlayout>
             {cate.map((e, i) => (
               <Link to={e} key={i}>
