@@ -20,7 +20,7 @@ function Board({
   return (
     <Link
       to={{
-        pathname: process.env.PUBLIC_URL + `/board/${_id}`,
+        pathname:`/board/${_id}`,
       }}
     >
       <Card

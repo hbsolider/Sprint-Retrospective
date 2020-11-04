@@ -24,7 +24,7 @@ function Navbar(props) {
   const DropMenu = () => {
     return (
       <Menu>
-        <Menu.Item><Link to={process.env.PUBLIC_URL+'/user/profile'}>Profile</Link></Menu.Item>
+        <Menu.Item><Link to='/user/profile'>Profile</Link></Menu.Item>
         <Menu.Item onClick={logOut}>Log out</Menu.Item>
       </Menu>
     );
@@ -33,7 +33,7 @@ function Navbar(props) {
     <Nav>
       <Row gutter={16} style={{ width: "100%" }}>
         <Col span={4}>
-          <Link to={process.env.PUBLIC_URL+"/"}>
+          <Link to="/">
             <TextLogo>FunRetro</TextLogo>
           </Link>
         </Col>

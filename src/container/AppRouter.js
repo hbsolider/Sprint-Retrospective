@@ -13,26 +13,26 @@ import { connect } from "react-redux";
 import Navbar from "./Navbar";
 function AppRouter(props) {
   return (
-    <HashRouter>
+    <HashRouter basename={process.env.PUBLIC_URL}>
       <Navbar />
       <Switch>
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/user"}
+          path="/user"
           render={() => {
             return <User to={0} />;
           }}
         />
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/user/register"}
+          path="/user/register"
           render={() => {
             return <User to={1} />;
           }}
         />
         <ProtectedRoute
           exact
-          path={process.env.PUBLIC_URL + "/user/profile"}
+          path= "/user/profile"
           Component={User}
           to={2}
           haveHeader={true}
@@ -40,21 +40,21 @@ function AppRouter(props) {
         />
         <ProtectedRoute
           exact
-          path={process.env.PUBLIC_URL + "/"}
+          path="/"
           Component={Dashboard}
           haveHeader={true}
           {...props}
         />
         <ProtectedRoute
           exact
-          path={process.env.PUBLIC_URL + "/dashboard"}
+          path="/dashboard"
           Component={Dashboard}
           haveHeader={true}
           {...props}
         />
         <ProtectedRoute
           exact
-          path={process.env.PUBLIC_URL + "/board/:boardId?"}
+          path="/board/:boardId?"
           Component={Board}
           haveHeader={false}
           inMain={false}
@@ -93,7 +93,7 @@ const ProtectedRoute = ({
             )}
           </>
         ) : (
-          <Redirect to={process.env.PUBLIC_URL + "/user"} />
+          <Redirect to= "/user" />
         );
       }}
       {...rest}

@@ -80,7 +80,7 @@ function LoginOrRegister({ isLogin, ...props }) {
               </Button>
             </Form.Item>
             <div style={{ textAlign: "center", marginBottom: "10px" }}>Or</div>
-            <Link to={process.env.PUBLIC_URL + "/user/register"}>
+            <Link to= "/user/register">
               <Form.Item>
                 <Button style={{ width: "100%" }}>Register</Button>
               </Form.Item>
@@ -152,7 +152,7 @@ function LoginOrRegister({ isLogin, ...props }) {
             <div style={{ textAlign: "center", marginBottom: "10px" }}>
               If you have account
             </div>
-            <Link to={process.env.PUBLIC_URL + "/user"}>
+            <Link to="/user">
               <Form.Item>
                 <Button style={{ width: "100%" }}>Login</Button>
               </Form.Item>
@@ -165,7 +165,7 @@ function LoginOrRegister({ isLogin, ...props }) {
   return (
     <>
       {props.user.loggedIn ? (
-        <Redirect to={process.env.PUBLIC_URL} />
+        <Redirect to='/' />
       ) : (
         <>{isLogin ? renderLogin() : renderRegister()}</>
       )}
