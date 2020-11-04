@@ -4,6 +4,8 @@ import Board from "./Board";
 import * as BoardAction from "../../redux/Board/Board.action";
 import { connect } from "react-redux";
 import { Modal, Input } from "antd";
+import {useLocation} from 'react-router-dom'
+import copy from 'copy-to-clipboard';
 const Center = styled.div`
   height: 100%;
   width: 100%;
@@ -50,6 +52,16 @@ const ListBoard = (props) => {
       props.addBoard(titleBoard);
     }
   };
+  const onDelete = (_id) => {
+    props.deleteBoard(_id)
+    props.fetchBoard()
+  };
+  const onShare =(_id)=>{
+    console.log(props)
+    const url = `${window.location.href}/board/${_id}`
+    copy(url)
+    props.publicBoard(_id)
+  }
   useEffect(props.fetchBoard, []);
   return (
     <List>
@@ -73,7 +85,7 @@ const ListBoard = (props) => {
         <Input onChange={onChange} />
       </Modal>
       {props.listBoard.map((e, i) => (
-        <Board {...e} key={i} />
+        <Board {...e} key={i} onDelete={()=>onDelete(e._id)} onShare={()=>onShare(e._id)}/>
       ))}
     </List>
   );
@@ -95,6 +107,12 @@ const mapDispatchToProps = (dispatch) => {
     addBoard: (title) => {
       dispatch(BoardAction.addBoard(title));
     },
+    deleteBoard:(_id)=>{
+      dispatch(BoardAction.deleteBoard({_id}))
+    },
+    publicBoard:_id=>{
+      dispatch(BoardAction.publicBoard(_id))
+    }
   };
 };
 const listBoardConnect = connect(

@@ -17,7 +17,10 @@ const fetchBoardData = (boardId) => {
     dispatch(fetchRequest());
     try {
       await BoardApi.fetchDataApi(boardId).then((data) => {
-        if (data) dispatch(fetchData(data.column));
+        if (data) {
+          dispatch(fetchData(data.column));
+          dispatch(setCurrentBoard({ _id: boardId, title: data.title }));
+        }
       });
     } catch (error) {
       console.log(error);
@@ -29,6 +32,7 @@ const fetchBoardWithOutLoading = (boardId) => {
   return (dispatch) => {
     BoardApi.fetchDataApi(boardId).then((data) => {
       dispatch(fetchData(data.column));
+      dispatch(setCurrentBoard({ _id: boardId, title: data.title }));
     });
   };
 };
@@ -81,7 +85,9 @@ const addCardCancelRequest = (index) => {
 };
 const addCard = (index, { columnId, title }, boardId) => {
   const success = () => {
-    message.success("Add card success");
+    message.loading("Loading...").then(() => {
+      message.success("Add card success");
+    });
     return { type: BOARD.ADD_CARD_SUCCESS, payload: index };
   };
   const fail = () => {
@@ -165,12 +171,20 @@ const updateBoardRequest = () => {
   };
 };
 const updateBoard = ({ _id, title }) => {
-  const updateSuccess = () => ({ type: BOARD.UPDATE_BOARD_SUCCESS });
+  const updateSuccess = () => {
+    message.success("Update board title success!", 0.5).then(() => {
+      message.loading("Waiting refesh data ...", 1.5);
+    });
+    return { type: BOARD.UPDATE_BOARD_SUCCESS };
+  };
   const updateFailure = () => ({ type: BOARD.UPDATE_BOARD_FAILURE });
   return async (dispatch) => {
     try {
       await BoardApi.update({ _id, title }).then((r) => {
-        if (r) return dispatch(updateSuccess());
+        if (r) {
+          dispatch(fetchBoardWithOutLoading(_id));
+          return dispatch(updateSuccess());
+        }
         dispatch(updateFailure());
       });
     } catch (error) {
@@ -179,7 +193,39 @@ const updateBoard = ({ _id, title }) => {
     }
   };
 };
+const setCurrentBoard = ({ _id, title }) => {
+  return (dispatch) => {
+    dispatch({ type: BOARD.SET_CURRENT_BOARD, payload: { _id, title } });
+  };
+};
+const deleteBoard = ({ _id }) => {
+  const deleteSuccess = () => {
+    message.success("Delete board success!");
+    return { type: BOARD.DELETE_BOARD };
+  };
+  const deleteFail = () => {
+    message.error("Error when delete board!");
+  };
+  return async (dispatch) => {
+    try {
+      await BoardApi.delete({ _id }).then((r) => {
+        if (!r) dispatch(deleteFail());
+        dispatch(deleteSuccess());
+      });
+    } catch (error) {
+      dispatch(deleteFail());
+    }
+  };
+};
+const publicBoard = (_id) => {
+  return async (dispatch) => {
+    await BoardApi.public(_id).then((r) => {
+      console.log(r);
+    });
+  };
+};
 export {
+  publicBoard,
   fetchBoard,
   fetchBoardData,
   changeVisibleAdd,
@@ -190,5 +236,7 @@ export {
   updateCard,
   deleteCard,
   updateBoard,
-  updateBoardRequest
+  updateBoardRequest,
+  setCurrentBoard,
+  deleteBoard,
 };

@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "./Axios";
 const BoardApi = {};
 const apiURL = process.env.REACT_APP_API_URL + "board";
@@ -32,6 +33,34 @@ BoardApi.update = async ({ _id, title }) => {
       if (data) return data;
     });
   } catch (error) {
+    console.log(error);
+  }
+};
+BoardApi.delete = async ({ _id }) => {
+  try {
+    return await axios.delete(apiURL, { data: { _id } }).then((r) => {
+      if (r) return r;
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+BoardApi.public = async (_id) => {
+  const success = () => {
+    message.success("Coppied!");
+  };
+  const failure = () => {
+    message.error("Error");
+  };
+  try {
+    return await axios.post(apiURL + "/public", { _id }).then((r) => {
+      if (r) {
+        success();
+        return r.data;
+      }
+    });
+  } catch (error) {
+    failure();
     console.log(error);
   }
 };

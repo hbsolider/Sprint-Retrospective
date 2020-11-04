@@ -16,41 +16,79 @@ function AppRouter(props) {
     <Router>
       <Navbar />
       <Switch>
-        <Route exact path={process.env.PUBLIC_URL + "/user"} component={User} />
+        <Route
+          exact
+          path={process.env.PUBLIC_URL + "/user"}
+          render={() => {
+            return <User to={0} />;
+          }}
+        />
+        <Route
+          exact
+          path={process.env.PUBLIC_URL + "/user/register"}
+          render={() => {
+            return <User to={1} />;
+          }}
+        />
+        <ProtectedRoute
+          exact
+          path={process.env.PUBLIC_URL + "/user/profile"}
+          Component={User}
+          to={2}
+          haveHeader={true}
+          {...props}
+        />
         <ProtectedRoute
           exact
           path={process.env.PUBLIC_URL + "/"}
           Component={Dashboard}
+          haveHeader={true}
           {...props}
         />
         <ProtectedRoute
           exact
           path={process.env.PUBLIC_URL + "/dashboard"}
           Component={Dashboard}
+          haveHeader={true}
           {...props}
         />
-        <Route
+        <ProtectedRoute
           exact
           path={process.env.PUBLIC_URL + "/board/:boardId?"}
-          render={(props) => {
-            return <Board {...props} title={props.location.state.title} />;
-          }}
+          Component={Board}
+          haveHeader={false}
+          inMain={false}
+          {...props}
         />
       </Switch>
     </Router>
   );
 }
 
-const ProtectedRoute = ({ Component, user, path, ...rest }) => {
+const ProtectedRoute = ({
+  Component,
+  user,
+  path,
+  haveHeader,
+  inMain = true,
+  to = null,
+  ...rest
+}) => {
   return (
     <Route
       path={path}
       render={(props) => {
         return user.loggedIn ? (
-          <div className="main">
-            <Header />
-            <Component {...props} />
-          </div>
+          <>
+            {inMain ? (
+              <div className="main">
+                {haveHeader && <Header />}
+                <Component to={to} {...props} />
+              </div>
+            ) : (
+              <Component {...props} to={to} />
+            )}
+          </>
         ) : (
           <Redirect to={process.env.PUBLIC_URL + "/user"} />
         );

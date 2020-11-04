@@ -24,7 +24,6 @@ CardApi.update = async ({ _id, title }) => {
 CardApi.delete = async ({ _id }) => {
   try {
     return await axios.delete(URL, { data:{_id} }).then((res) => {
-      console.log(res)
       if (res) {
         return res;
       }

@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
-import { Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import { Typography, Button, Input, Spin, Space } from "antd";
 import Column from "./Column";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { fetchBoardData } from "../../redux/Board/Board.action";
+import {
+  fetchBoardData,
+  updateBoardRequest,
+  updateBoard,
+} from "../../redux/Board/Board.action";
 import { useParams } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
 const { Title } = Typography;
@@ -15,6 +19,8 @@ const Control = styled.div`
   padding: 5px 30px;
   border: 1px solid black;
   background-color: #bbbfca;
+  display: flex;
+  align-items: center;
 `;
 const Center = styled.div`
   height: 100%;
@@ -24,20 +30,80 @@ const Center = styled.div`
   width: 100vw;
 `;
 function ViewBoard(props) {
+  const [title, setTitle] = useState(null);
   const param = useParams();
   const color = ["rgb(156,39,176)", "rgb(0,150,136)", "rgb(233,30,99)"];
   const fetchBoardData = () => {
     props.fetchBoardData(param.boardId);
   };
-  const dragEnd = (e) => {
+  const dragEnd = (e) => {};
+  const requestEdit = () => {
+    props.updateBoardRequest();
+  };
+  const onChange = (e) => {
+    let value = e.target.value;
+    setTitle(value);
+  };
+  const onSave = () => {
+    if (title === null) {
+      return props.updateBoardRequest();
+    }
+    props.updateBoard({ _id: param.boardId, title });
+  };
+  const onCancel = () => {
+    props.updateBoardRequest();
   };
   useEffect(fetchBoardData, []);
   return (
     <>
       <Control>
-        <Title level={5} style={{ margin: "0px" }}>
-          {props.title}
-        </Title>
+        {props.isEditBoard ? (
+          <>
+            <Input
+              defaultValue={props.currentBoard.title}
+              onChange={onChange}
+              style={{ maxWidth: "400px" }}
+            />
+            <Button
+              size="small"
+              type="primary"
+              style={{ margin: "0px 10px" }}
+              onClick={() => onSave()}
+            >
+              Save
+            </Button>
+            <Button
+              size="small"
+              type="ghost"
+              style={{ margin: "0px 10px" }}
+              onClick={() => onCancel()}
+            >
+              Cancel
+            </Button>
+          </>
+        ) : (
+          <>
+            <Title level={5} style={{ margin: "0px" }}>
+              {props.currentBoard !== null && !props.isfetching ? (
+                props.currentBoard.title
+              ) : (
+                <Space>
+                  Loading <Spin />
+                </Space>
+              )}
+            </Title>
+            {props.currentBoard !== null && !props.isfetching && (
+              <Button
+                size="small"
+                type="ghost"
+                style={{ margin: "0px 10px" }}
+                onClick={() => requestEdit()}
+              >
+                Edit
+              </Button>
+            )}
+          </>
+        )}
       </Control>
       <CoverColumn>
         {props.isfetching ? (
@@ -47,7 +113,6 @@ function ViewBoard(props) {
               alt="load"
             />
           </Center>
-
         ) : (
           <DragDropContext onDragEnd={dragEnd}>
             {props.column.map((e, i) => (
@@ -70,12 +135,20 @@ const mapStateToProps = (state) => ({
   column: state.board.column,
   isfetching: state.board.isfetching,
   isaddCard: state.board.isaddCard,
+  isEditBoard: state.board.isEditBoard,
+  currentBoard: state.board.currentBoard,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchBoardData: (params) => {
       dispatch(fetchBoardData(params));
+    },
+    updateBoardRequest: () => {
+      dispatch(updateBoardRequest());
+    },
+    updateBoard: ({ _id, title }) => {
+      dispatch(updateBoard({ _id, title }));
     },
   };
 };

@@ -7,6 +7,7 @@ let initState = {
   isfetching: false,
   isaddCard: [false, false, false],
   isEditBoard: false,
+  currentBoard: null,
 };
 
 const reducerBoard = (state = initState, action) => {
@@ -18,7 +19,7 @@ const reducerBoard = (state = initState, action) => {
       state.isfetching = true;
       return { ...state };
     case BOARD.UPDATE_BOARD:
-      state.isEditBoard = true;
+      state.isEditBoard = !state.isEditBoard;
       return { ...state };
     case BOARD.UPDATE_BOARD_SUCCESS:
       state.isEditBoard = false;
@@ -57,6 +58,9 @@ const reducerBoard = (state = initState, action) => {
     case BOARD.UPDATE_CARD:
       return { ...state };
     case BOARD.DELETE_CARD:
+      return { ...state };
+    case BOARD.SET_CURRENT_BOARD:
+      state.currentBoard = action.payload;
       return { ...state };
     default:
       return { ...state };

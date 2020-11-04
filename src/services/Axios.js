@@ -17,10 +17,10 @@ axios.interceptors.request.use(
 );
 
 const axiosInstance = axios.create({
-  timeout: 5000,
   headers: {
     Authorization: `${token}`,
     "Content-Type": "application/json",
   },
 });
 export default axiosInstance;
+

@@ -8,14 +8,19 @@ import {
   CopyOutlined,
 } from "@ant-design/icons";
 
-function Board({ dayCreated, cardAmount, _id, ...props }) {
+function Board({
+  dayCreated,
+  cardAmount,
+  _id,
+  setCurrentBoard,
+  onDelete,
+  onShare,
+  ...props
+}) {
   return (
     <Link
       to={{
         pathname: process.env.PUBLIC_URL + `/board/${_id}`,
-        state: {
-          title: props.title,
-        },
       }}
     >
       <Card
@@ -28,12 +33,14 @@ function Board({ dayCreated, cardAmount, _id, ...props }) {
             style={{ zIndex: 100 }}
             onClick={(e) => {
               e.preventDefault();
+              onShare();
             }}
           />,
           <DeleteOutlined
             key="setting"
             onClick={(e) => {
               e.preventDefault();
+              onDelete();
             }}
           />,
         ]}

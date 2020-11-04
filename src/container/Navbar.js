@@ -24,7 +24,7 @@ function Navbar(props) {
   const DropMenu = () => {
     return (
       <Menu>
-        <Menu.Item>Profile</Menu.Item>
+        <Menu.Item><Link to={process.env.PUBLIC_URL+'/user/profile'}>Profile</Link></Menu.Item>
         <Menu.Item onClick={logOut}>Log out</Menu.Item>
       </Menu>
     );
