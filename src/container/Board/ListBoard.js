@@ -4,7 +4,6 @@ import Board from "./Board";
 import * as BoardAction from "../../redux/Board/Board.action";
 import { connect } from "react-redux";
 import { Modal, Input } from "antd";
-import {useLocation} from 'react-router-dom'
 import copy from 'copy-to-clipboard';
 const Center = styled.div`
   height: 100%;

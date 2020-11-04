@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
+  HashRouter
 } from "react-router-dom";
 import Dashboard from "../container/Dashboard";
 import Header from "../container/Header";
@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import Navbar from "./Navbar";
 function AppRouter(props) {
   return (
-    <Router>
+    <HashRouter>
       <Navbar />
       <Switch>
         <Route
@@ -64,7 +64,7 @@ function AppRouter(props) {
           return "Not found"
         }}/>
       </Switch>
-    </Router>
+    </HashRouter>
   );
 }
 
