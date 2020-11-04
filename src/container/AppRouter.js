@@ -60,6 +60,9 @@ function AppRouter(props) {
           inMain={false}
           {...props}
         />
+        <Route path="*" render={()=>{
+          return "Not found"
+        }}/>
       </Switch>
     </Router>
   );
