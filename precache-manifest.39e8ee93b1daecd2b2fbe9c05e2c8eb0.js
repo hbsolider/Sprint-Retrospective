@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ac1eafee77691ae881b6ce6e3bb89399",
+    "revision": "53c2cbbd452acfeb54e191111ee6bdc9",
     "url": "/Sprint-Retrospective/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Sprint-Retrospective/static/css/2.00a338ba.chunk.css"
   },
   {
-    "revision": "25986c6e7d915996adc4",
+    "revision": "cdcc1f9f7b37870d91df",
     "url": "/Sprint-Retrospective/static/css/main.fd19d239.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Sprint-Retrospective/static/js/2.f453aa77.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "25986c6e7d915996adc4",
-    "url": "/Sprint-Retrospective/static/js/main.e38e4035.chunk.js"
+    "revision": "cdcc1f9f7b37870d91df",
+    "url": "/Sprint-Retrospective/static/js/main.18e1d762.chunk.js"
   },
   {
     "revision": "3b9e94bd5ec1486ad09c",
