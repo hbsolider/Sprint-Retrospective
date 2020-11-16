@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { Route, Switch, Redirect, HashRouter } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  Redirect,
+  BrowserRouter,
+} from "react-router-dom";
 import Dashboard from "../container/Dashboard";
 import Header from "../container/Header";
 import User from "../container/User";
@@ -21,7 +26,7 @@ function AppRouter(props) {
   // },[]);
   useEffect(props.getUser, []);
   return (
-    <HashRouter basename={'/'}>
+    <BrowserRouter>
       <Navbar />
       <Switch>
         <Route
@@ -75,7 +80,7 @@ function AppRouter(props) {
           }}
         />
       </Switch>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
