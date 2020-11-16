@@ -89,9 +89,7 @@ const addCardCancelRequest = (index) => {
 };
 const addCard = (index, { columnId, title }, boardId) => {
   const success = () => {
-    message.loading("Loading...").then(() => {
       message.success("Add card success");
-    });
     return { type: BOARD.ADD_CARD_SUCCESS, payload: index };
   };
   const fail = () => {
@@ -99,6 +97,7 @@ const addCard = (index, { columnId, title }, boardId) => {
     return { type: BOARD.ADD_CARD_FAILURE, payload: index };
   };
   return async (dispatch) => {
+    message.loading("Loading...")
     try {
       await CardApi.createCard({ columnId, title }).then((r) => {
         if (r) {
@@ -139,9 +138,7 @@ const updateCard = ({ _id, title }, boardId) => {
 };
 const deleteCard = ({ _id }, columnId, boardId) => {
   const deleteSuccess = () => {
-    message.loading("Action in progress..", 2.5).then(() => {
-      message.success("Delete card success!");
-    });
+    message.success("Delete card success!");
     return {
       type: BOARD.DELETE_CARD,
     };
@@ -153,6 +150,7 @@ const deleteCard = ({ _id }, columnId, boardId) => {
     };
   };
   return async (dispatch) => {
+    message.loading("Action in progress..")
     try {
       return await CardApi.delete({ _id, columnId }).then((r) => {
         if (r) {
@@ -259,8 +257,8 @@ const changeIndexCard = (source, destination, cardId, boardId) => {
       });
       const cardS = colS[0].card;
       const cardD = colD[0].card;
-      let a = cardS.splice(sourceIndex,1);
-      cardD.splice(desIndex,0,a[0]);
+      let a = cardS.splice(sourceIndex, 1);
+      cardD.splice(desIndex, 0, a[0]);
     }
     await CardApi.changeColumnAndIndex({
       sourceId,
