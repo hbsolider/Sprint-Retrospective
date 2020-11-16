@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fb1a154aacad70a7a8fba26fb77ba0c7",
+    "revision": "e132565b992e83ba1c1b3a49c4012e1e",
     "url": "/Sprint-Retrospective/index.html"
   },
   {
-    "revision": "84d358b74106a4ec4f42",
+    "revision": "81955fa05573b4db2ea2",
     "url": "/Sprint-Retrospective/static/css/2.00a338ba.chunk.css"
   },
   {
-    "revision": "0cd402cb943e67dd4841",
+    "revision": "657c0a2d20e823c1866d",
     "url": "/Sprint-Retrospective/static/css/main.fd19d239.chunk.css"
   },
   {
-    "revision": "84d358b74106a4ec4f42",
-    "url": "/Sprint-Retrospective/static/js/2.5ae35a4f.chunk.js"
+    "revision": "81955fa05573b4db2ea2",
+    "url": "/Sprint-Retrospective/static/js/2.bac892c3.chunk.js"
   },
   {
     "revision": "ce53c4b16522e4a5817476f862996bac",
-    "url": "/Sprint-Retrospective/static/js/2.5ae35a4f.chunk.js.LICENSE.txt"
+    "url": "/Sprint-Retrospective/static/js/2.bac892c3.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "0cd402cb943e67dd4841",
-    "url": "/Sprint-Retrospective/static/js/main.6212fdec.chunk.js"
+    "revision": "657c0a2d20e823c1866d",
+    "url": "/Sprint-Retrospective/static/js/main.cbbc9d2f.chunk.js"
   },
   {
     "revision": "3b9e94bd5ec1486ad09c",
