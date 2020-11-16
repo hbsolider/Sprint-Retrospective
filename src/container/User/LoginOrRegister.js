@@ -38,10 +38,10 @@ function LoginOrRegister({ isLogin, ...props }) {
     props.register({ username, password, email });
   };
   const facebookLogin = () => {
-    window.location = `http://localhost:5000/api/user/auth/facebook`;
+    window.location = `${process.env.REACT_APP_API_URL||'http://localhost:5000'}/api/user/auth/facebook`;
   };
   const googleLogin = () => {
-    window.location = `http://localhost:5000/api/user/auth/google`;
+    window.location = `${process.env.REACT_APP_API_URL||'http://localhost:5000'}/api/user/auth/google`;
   };
   const renderLogin = () => {
     return (
