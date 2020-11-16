@@ -1,10 +1,12 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 // import styled from "styled-components";
 import Section from "../components/Section";
 import { Space, Typography, Divider, Row, Col } from "antd";
 import styled from "styled-components";
 import Sort from "../assets/icons/sort.svg";
 import ListBoard from "../container/Board/ListBoard";
+import { connect } from "react-redux";
+import * as BoardAction from "../redux/Board/Board.action";
 const { Title } = Typography;
 
 const Control = styled.div`
@@ -22,6 +24,7 @@ const Dashboard = (props) => {
   const onClickAccending = () => {
     setAccending(!isAccending);
   };
+  useEffect(props.fetchBoard, []);
   return (
     <>
       <Section>
@@ -51,4 +54,19 @@ const Dashboard = (props) => {
     </>
   );
 };
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  listboard: state.board.listBoard,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchBoard: () => {
+      dispatch(BoardAction.fetchBoard());
+    },
+  };
+};
+const connectDashboard = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);
+export default connectDashboard;

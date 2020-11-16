@@ -1,17 +1,25 @@
-import React from "react";
-import {
-  Route,
-  Switch,
-  Redirect,
-  HashRouter
-} from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Switch, Redirect, HashRouter } from "react-router-dom";
 import Dashboard from "../container/Dashboard";
 import Header from "../container/Header";
 import User from "../container/User";
 import Board from "../container/Board";
 import { connect } from "react-redux";
 import Navbar from "./Navbar";
+import UserAction from "../redux/User/User.action";
 function AppRouter(props) {
+  // useEffect(() => {
+  //   fetch("/user/")
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       console.log(res);
+  //       props.getUser(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // },[]);
+  useEffect(props.getUser, []);
   return (
     <HashRouter basename={process.env.PUBLIC_URL}>
       <Navbar />
@@ -32,7 +40,7 @@ function AppRouter(props) {
         />
         <ProtectedRoute
           exact
-          path= "/user/profile"
+          path="/user/profile"
           Component={User}
           to={2}
           haveHeader={true}
@@ -60,9 +68,12 @@ function AppRouter(props) {
           inMain={false}
           {...props}
         />
-        <Route path="*" render={()=>{
-          return "Not found"
-        }}/>
+        <Route
+          path="*"
+          render={() => {
+            return "Not found";
+          }}
+        />
       </Switch>
     </HashRouter>
   );
@@ -93,7 +104,7 @@ const ProtectedRoute = ({
             )}
           </>
         ) : (
-          <Redirect to= "/user" />
+          <Redirect to="/user" />
         );
       }}
       {...rest}
@@ -103,6 +114,12 @@ const ProtectedRoute = ({
 const mapStateToProps = (state) => ({
   user: state.user,
 });
-
-const appConnect = connect(mapStateToProps)(AppRouter);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUser: () => {
+      dispatch(UserAction.getUser2());
+    },
+  };
+};
+const appConnect = connect(mapStateToProps, mapDispatchToProps)(AppRouter);
 export default appConnect;

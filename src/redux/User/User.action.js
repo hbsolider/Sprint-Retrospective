@@ -15,14 +15,14 @@ UserAction.login = ({ username, password }) => {
     message.error("Invalid fields");
     return { type: USER.LOGIN_FAILURE, payload: data };
   };
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(loginRequest());
 
-    UserApi.login({ username, password })
-      .then((res) => {
+    await UserApi.login({ username, password })
+      .then(async (res) => {
         if (res) {
-          localStorage.setItem("token", res.token);
-          localStorage.setItem("user", JSON.stringify(res.user));
+          await localStorage.setItem("token", res.token);
+          await localStorage.setItem("user", JSON.stringify(res.user));
           dispatch(loginSuccess(res.user));
         }
       })
@@ -56,7 +56,10 @@ UserAction.register = ({ username, password, email }) => {
   };
 };
 UserAction.logout = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
+    try {
+      await UserAPI.logOut();
+    } catch (error) {}
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     dispatch({ type: USER.LOGOUT });
@@ -108,6 +111,26 @@ UserAction.compare = ({ password, hashpassword }) => {
         console.log(r);
       });
     } catch (error) {}
+  };
+};
+
+UserAction.getUser2 = () => {
+  const loginSuccess = (data) => {
+    return { type: USER.LOGIN_SUCCESS, payload: data };
+  };
+  const loginFail = () => {
+    return { type: USER.LOGIN_FAILURE };
+  };
+  return async (dispatch) => {
+    await UserAPI.getUser().then((r) => {
+      if (r.isLogged) {
+        localStorage.setItem("user", JSON.stringify(r));
+        return dispatch(loginSuccess(r));
+      } else {
+        localStorage.removeItem("user");
+        return dispatch(loginFail());
+      }
+    });
   };
 };
 export default UserAction;

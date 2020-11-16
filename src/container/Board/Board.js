@@ -20,17 +20,17 @@ function Board({
   return (
     <Link
       to={{
-        pathname:`/board/${_id}`,
+        pathname: `/board/${_id}`,
       }}
     >
       <Card
         title={props.title}
-        style={{ minWidth: "240px", border: "1px solid black", margin: "10px" }}
+        style={{ minWidth: "240px", margin: "10px" }}
         hoverable={true}
         actions={[
           <CopyOutlined
             key="edit"
-            style={{ zIndex: 100 }}
+            style={{ color: "blue" }}
             onClick={(e) => {
               e.preventDefault();
               onShare();
@@ -42,6 +42,7 @@ function Board({
               e.preventDefault();
               onDelete();
             }}
+            style={{color:'rgb(233, 30, 99)'}}
           />,
         ]}
         size="small"

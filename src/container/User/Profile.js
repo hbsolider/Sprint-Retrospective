@@ -24,7 +24,10 @@ const Colm = styled.div`
 `;
 function Profile(props) {
   const [user, setUser] = useState({
-    username: props.user.username,
+    username:
+      props.user.from === "local"
+        ? props.user.username
+        : props.user.from + " acount",
     password: null,
     email: props.user.email,
     passwordChange: false,
@@ -141,7 +144,7 @@ function Profile(props) {
   );
 }
 const mapStateToProps = (state) => ({
-  user: JSON.parse(state.user.user),
+  user: JSON.parse(localStorage.getItem("user")).user,
   edit: state.user.edit,
 });
 

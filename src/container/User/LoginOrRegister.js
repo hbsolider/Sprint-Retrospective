@@ -1,9 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { Form, Input, Typography, Button } from "antd";
+import { Form, Input, Typography, Button, Checkbox, Divider } from "antd";
 import { connect } from "react-redux";
 import userAction from "../../redux/User/User.action";
 import { Redirect, Link } from "react-router-dom";
+import {
+  UserOutlined,
+  LockOutlined,
+  FacebookOutlined,
+  GoogleOutlined,
+} from "@ant-design/icons";
 const { Title } = Typography;
 
 const LoginForm = styled.div`
@@ -20,6 +26,7 @@ const Center = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 `;
 function LoginOrRegister({ isLogin, ...props }) {
   const onFinishLogin = ({ username, password }) => {
@@ -28,65 +35,80 @@ function LoginOrRegister({ isLogin, ...props }) {
     }
   };
   const onFinishRegister = ({ username, password, email }) => {
-    props.register({username,password,email})
+    props.register({ username, password, email });
+  };
+  const facebookLogin = () => {
+    window.location = `http://localhost:5000/api/user/auth/facebook`;
+  };
+  const googleLogin = () => {
+    window.location = `http://localhost:5000/api/user/auth/google`;
   };
   const renderLogin = () => {
     return (
       <Center>
-        <LoginForm>
-          <div>
-            <Title level={2} style={{ textAlign: "center" }}>
-              Login
-            </Title>
-          </div>
-          <Form
-            onFinish={onFinishLogin}
-            layout="vertical"
-            size="large"
-            style={{
-              display: "flext",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%",
-            }}
-            requiredMark={false}
+        <Title level={4} style={{ textAlign: "center" }}>
+          Welcome login
+        </Title>
+        <Form
+          name="normal_login"
+          initialValues={{ remember: true }}
+          onFinish={onFinishLogin}
+        >
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Username!" }]}
           >
-            <Form.Item
-              label="Username"
-              name="username"
-              rules={[
-                { required: true, message: "Please input your username!" },
-              ]}
-            >
-              <Input />
+            <Input prefix={<UserOutlined />} placeholder="Username" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input
+              prefix={<LockOutlined />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                { required: true, message: "Please input your password!" },
-              ]}
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              style={{ width: "100%" }}
             >
-              <Input type="password" size="large" />
-            </Form.Item>
-            <Form.Item>
+              Log in
+            </Button>
+          </Form.Item>
+          <Divider orientation="center">Or</Divider>
+          <Form.Item>
+            <Form.Item style={{ display: "inline-block", width: "calc(50%)" }}>
               <Button
-                htmlType="submit"
+                onClick={googleLogin}
                 style={{ width: "100%" }}
                 type="primary"
-                loading={props.user.loggingIn}
+                danger
               >
-                Login
+                <GoogleOutlined />
               </Button>
             </Form.Item>
-            <div style={{ textAlign: "center", marginBottom: "10px" }}>Or</div>
-            <Link to= "/user/register">
-              <Form.Item>
-                <Button style={{ width: "100%" }}>Register</Button>
-              </Form.Item>
-            </Link>
-          </Form>
-        </LoginForm>
+            <Form.Item style={{ display: "inline-block", width: "calc(50%)" }}>
+              <Button
+                onClick={facebookLogin}
+                style={{ width: "100%" }}
+                type="default"
+              >
+                <FacebookOutlined style={{ color: "rgb(24,144,255)" }} />
+              </Button>
+            </Form.Item>
+          </Form.Item>
+        </Form>
       </Center>
     );
   };
@@ -165,7 +187,7 @@ function LoginOrRegister({ isLogin, ...props }) {
   return (
     <>
       {props.user.loggedIn ? (
-        <Redirect to='/' />
+        <Redirect to="/" />
       ) : (
         <>{isLogin ? renderLogin() : renderRegister()}</>
       )}

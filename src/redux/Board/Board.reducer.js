@@ -1,7 +1,7 @@
 import BOARD from "./constants";
 let initState = {
   listBoard: [],
-  column: [],
+  column: [{ _id: null, card: [], title: null }],
   visibleAdd: false,
   creating: false,
   isfetching: false,
@@ -61,6 +61,9 @@ const reducerBoard = (state = initState, action) => {
       return { ...state };
     case BOARD.SET_CURRENT_BOARD:
       state.currentBoard = action.payload;
+      return { ...state };
+    case BOARD.CHANGE_INDEX_CARD:
+      state.column = action.payload;
       return { ...state };
     default:
       return { ...state };

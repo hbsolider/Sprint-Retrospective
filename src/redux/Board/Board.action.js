@@ -12,7 +12,9 @@ const fetchBoard = () => {
 };
 const fetchBoardData = (boardId) => {
   const fetchRequest = () => ({ type: BOARD.FETCH_REQUEST });
-  const fetchData = (data) => ({ type: BOARD.FETCH_BOARD_DATA, payload: data });
+  const fetchData = (data) => {
+    return { type: BOARD.FETCH_BOARD_DATA, payload: data };
+  };
   return async (dispatch) => {
     dispatch(fetchRequest());
     try {
@@ -29,10 +31,12 @@ const fetchBoardData = (boardId) => {
 };
 const fetchBoardWithOutLoading = (boardId) => {
   const fetchData = (data) => ({ type: BOARD.FETCH_BOARD_DATA, payload: data });
-  return (dispatch) => {
-    BoardApi.fetchDataApi(boardId).then((data) => {
-      dispatch(fetchData(data.column));
-      dispatch(setCurrentBoard({ _id: boardId, title: data.title }));
+  return async (dispatch) => {
+    await BoardApi.fetchDataApi(boardId).then((data) => {
+      if (data) {
+        dispatch(fetchData(data.column));
+        dispatch(setCurrentBoard({ _id: boardId, title: data.title }));
+      }
     });
   };
 };
@@ -133,7 +137,7 @@ const updateCard = ({ _id, title }, boardId) => {
     }
   };
 };
-const deleteCard = ({ _id }, boardId) => {
+const deleteCard = ({ _id }, columnId, boardId) => {
   const deleteSuccess = () => {
     message.loading("Action in progress..", 2.5).then(() => {
       message.success("Delete card success!");
@@ -150,7 +154,7 @@ const deleteCard = ({ _id }, boardId) => {
   };
   return async (dispatch) => {
     try {
-      return await CardApi.delete({ _id }).then((r) => {
+      return await CardApi.delete({ _id, columnId }).then((r) => {
         if (r) {
           dispatch(deleteSuccess());
           return dispatch(fetchBoardWithOutLoading(boardId));
@@ -224,7 +228,55 @@ const publicBoard = (_id) => {
     });
   };
 };
+
+const changeIndexCard = (source, destination, cardId, boardId) => {
+  const { sourceId, sourceIndex } = source;
+  const { desId, desIndex } = destination;
+  return async (dispatch, getState) => {
+    if (sourceId === desId) {
+      if (sourceIndex !== desIndex) {
+        let column = Object.assign({}, getState().board.column);
+        let tempColumn = [];
+        Object.keys(column).forEach((e) => {
+          if (column[e]._id === sourceId) tempColumn.push(column[e].card);
+        });
+        let card = tempColumn[0];
+        let t = card[sourceIndex];
+        card[sourceIndex] = card[desIndex];
+        card[desIndex] = t;
+      }
+    } else {
+      let col = [...getState().board.column];
+      const colS = col.filter((e) => {
+        if (e._id === sourceId) return e.card;
+        return null;
+      });
+      const colD = col.filter((e) => {
+        if (e._id === desId) {
+          return e.card;
+        }
+        return null;
+      });
+      const cardS = colS[0].card;
+      const cardD = colD[0].card;
+      let a = cardS.splice(sourceIndex,1);
+      cardD.splice(desIndex,0,a[0]);
+    }
+    await CardApi.changeColumnAndIndex({
+      sourceId,
+      sourceIndex,
+      desId,
+      desIndex,
+      cardId,
+    }).then((r) => {
+      if (!r) {
+        dispatch(fetchBoardWithOutLoading(boardId));
+      }
+    });
+  };
+};
 export {
+  changeIndexCard,
   publicBoard,
   fetchBoard,
   fetchBoardData,

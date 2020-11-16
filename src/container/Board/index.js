@@ -7,6 +7,7 @@ import {
   fetchBoardData,
   updateBoardRequest,
   updateBoard,
+  changeIndexCard,
 } from "../../redux/Board/Board.action";
 import { useParams } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -36,7 +37,19 @@ function ViewBoard(props) {
   const fetchBoardData = () => {
     props.fetchBoardData(param.boardId);
   };
-  const dragEnd = (e) => {};
+  const dragEnd = (e) => {
+    const { source, destination, draggableId } = e;
+    if (destination === null) return;
+    props.changeIndexCard(
+      { sourceId: source.droppableId, sourceIndex: source.index },
+      {
+        desId: destination.droppableId,
+        desIndex: destination.index,
+      },
+      draggableId,
+      param.boardId
+    );
+  };
   const requestEdit = () => {
     props.updateBoardRequest();
   };
@@ -149,6 +162,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateBoard: ({ _id, title }) => {
       dispatch(updateBoard({ _id, title }));
+    },
+    changeIndexCard: (source, destination, cardId,boardId) => {
+      dispatch(changeIndexCard(source, destination, cardId,boardId));
     },
   };
 };

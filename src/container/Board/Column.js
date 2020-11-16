@@ -40,9 +40,9 @@ const BodyColumn = ({ color, card, _id, ...props }) => {
   const onClick = (i) => {
     setEdit(i);
   };
-  const onDelete = async (_id) => {
+  const onDelete = async (_id, columnId) => {
     try {
-      props.deleteCard({ _id }, props.boardId);
+      props.deleteCard({ _id }, columnId, props.boardId);
       setEdit(null);
     } catch (error) {
       console.log(error);
@@ -66,7 +66,7 @@ const BodyColumn = ({ color, card, _id, ...props }) => {
     <>
       {card.map((e, i) => {
         return (
-          <Draggable draggableId={e._id} index={i} key={e._id}>
+          <Draggable draggableId={e._id+''} index={i} key={e._id+i}>
             {(provided) => (
               <div
                 key={e + i}
@@ -79,7 +79,7 @@ const BodyColumn = ({ color, card, _id, ...props }) => {
                   color={color}
                   onClick={() => onClick(i)}
                   isEdit={isEdit === i}
-                  onDelete={() => onDelete(e._id)}
+                  onDelete={() => onDelete(e._id, _id)}
                   onSave={(value) => onSave(value, e._id)}
                   onCancel={() => onCancel()}
                 />
@@ -152,7 +152,7 @@ const Column = (props) => {
           </ControlAdd>
         </LayoutText>
       )}
-      <Droppable droppableId={props._id}>
+      <Droppable droppableId={props._id+''}>
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
             <BodyColumn {...props} />
@@ -178,8 +178,8 @@ const mapDispatchToProps = (dispatch) => {
     updateCard: ({ _id, title }, boardId) => {
       dispatch(updateCard({ _id, title }, boardId));
     },
-    deleteCard: ({ _id }, boardId) => {
-      dispatch(deleteCard({ _id }, boardId));
+    deleteCard: ({ _id }, columnId, boardId) => {
+      dispatch(deleteCard({ _id }, columnId, boardId));
     },
   };
 };

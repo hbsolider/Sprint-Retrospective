@@ -1,7 +1,8 @@
 import { message } from "antd";
 import axios from "./Axios";
 const BoardApi = {};
-const apiURL = process.env.REACT_APP_API_URL + "board";
+const apiURL = "/board";
+// const apiURL = process.env.REACT_APP_API_URL + "board";
 BoardApi.fetchAPI = async () => {
   return await axios.get(apiURL).then(({ data }) => {
     return data.data;
@@ -64,4 +65,5 @@ BoardApi.public = async (_id) => {
     console.log(error);
   }
 };
+
 export default BoardApi;

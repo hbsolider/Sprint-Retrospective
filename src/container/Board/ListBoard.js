@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState,useEffect } from "react";
 import styled from "styled-components";
 import Board from "./Board";
 import * as BoardAction from "../../redux/Board/Board.action";
@@ -56,12 +56,14 @@ const ListBoard = (props) => {
     props.fetchBoard()
   };
   const onShare =(_id)=>{
-    console.log(props)
     const url = `${window.location.href}/board/${_id}`
     copy(url)
     props.publicBoard(_id)
   }
-  useEffect(props.fetchBoard, []);
+  const fetchBoard = async()=>{
+   await props.fetchBoard();
+  }
+  useEffect(fetchBoard,[])
   return (
     <List>
       <AddBoard onClick={visibleAddBoard}>
