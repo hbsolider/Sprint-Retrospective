@@ -21,7 +21,7 @@ function AppRouter(props) {
   // },[]);
   useEffect(props.getUser, []);
   return (
-    <HashRouter basename={process.env.PUBLIC_URL||'/'}>
+    <HashRouter basename={'/'}>
       <Navbar />
       <Switch>
         <Route

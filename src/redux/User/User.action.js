@@ -123,12 +123,14 @@ UserAction.getUser2 = () => {
   };
   return async (dispatch) => {
     await UserAPI.getUser().then((r) => {
-      if (r.isLogged) {
-        localStorage.setItem("user", JSON.stringify(r));
-        return dispatch(loginSuccess(r));
-      } else {
-        localStorage.removeItem("user");
-        return dispatch(loginFail());
+      if (r) {
+        if (r.isLogged) {
+          localStorage.setItem("user", JSON.stringify(r));
+          return dispatch(loginSuccess(r));
+        } else {
+          localStorage.removeItem("user");
+          return dispatch(loginFail());
+        }
       }
     });
   };
