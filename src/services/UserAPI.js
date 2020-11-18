@@ -30,12 +30,12 @@ UserAPI.update = async ({
   password,
   email,
   passwordChange = false,
+  displayName
 }) => {
   try {
     return await axios
-      .patch(apiUrl + "/", { _id, username, password, email, passwordChange })
+      .patch(apiUrl + "/", { _id, username, password, email, passwordChange,displayName })
       .then((r) => {
-        console.log(r);
         if (r) return r.data;
       });
   } catch (error) {
@@ -59,7 +59,7 @@ UserAPI.getUser = async () => {
       return r.data;
     });
   } catch (error) {
-    console.log(error);
+    throw error
   }
 };
 UserAPI.logOut = async () => {

@@ -2,8 +2,8 @@ import USER from "./constants";
 
 let user = localStorage.getItem("user");
 const initialState = user
-  ? { loggedIn: true, user, loggingIn: false, registering: false, edit: null }
-  : { registering: false, edit: null };
+  ? { loggedIn: true, user, loggingIn: false, registering: false, edit: false }
+  : { registering: false, edit: false };
 const reducerUser = (state = initialState, action) => {
   switch (action.type) {
     case USER.LOGIN_REQUEST:
@@ -34,14 +34,15 @@ const reducerUser = (state = initialState, action) => {
       state.registering = false;
       return { ...state };
     case USER.LOGIN_FAILURE:
-      return {};
+      state.loggedIn=false;
+      return {...state};
     case USER.LOGOUT:
       return {};
     case USER.EDIT_DONE:
       state.edit = null;
       return { ...state };
     case USER.EDIT_REQUEST:
-      state.edit = action.payload;
+      state.edit = !state.edit;
       return { ...state };
     default:
       return {

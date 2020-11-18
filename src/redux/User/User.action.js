@@ -65,7 +65,7 @@ UserAction.logout = () => {
     dispatch({ type: USER.LOGOUT });
   };
 };
-UserAction.update = ({ _id, username, password, email, passwordChange }) => {
+UserAction.update = ({ _id, username, password, email, passwordChange,displayName }) => {
   const success = () => {
     message.success("Update success");
     return { type: USER.EDIT_DONE };
@@ -82,6 +82,7 @@ UserAction.update = ({ _id, username, password, email, passwordChange }) => {
         password,
         email,
         passwordChange,
+        displayName
       }).then((r) => {
         if (r) {
           localStorage.setItem("user", JSON.stringify(r.user));
@@ -90,13 +91,14 @@ UserAction.update = ({ _id, username, password, email, passwordChange }) => {
         dispatch(failure());
       });
     } catch (error) {
+      dispatch(UserAction.getUser2())
       dispatch(failure());
     }
   };
 };
-UserAction.updateRequest = (payload) => {
+UserAction.updateRequest = () => {
   return (dispatch) => {
-    dispatch({ type: USER.EDIT_REQUEST, payload });
+    dispatch({ type: USER.EDIT_REQUEST });
   };
 };
 UserAction.cancelRequest = () => {
@@ -108,7 +110,6 @@ UserAction.compare = ({ password, hashpassword }) => {
   return async (dispatch) => {
     try {
       await UserAPI.compare({ password, hashpassword }).then((r) => {
-        console.log(r);
       });
     } catch (error) {}
   };
@@ -122,17 +123,24 @@ UserAction.getUser2 = () => {
     return { type: USER.LOGIN_FAILURE };
   };
   return async (dispatch) => {
-    await UserAPI.getUser().then((r) => {
-      if (r) {
-        if (r.isLogged) {
-          localStorage.setItem("user", JSON.stringify(r));
-          return dispatch(loginSuccess(r));
-        } else {
-          localStorage.removeItem("user");
-          return dispatch(loginFail());
+    try {
+      await UserAPI.getUser().then((r) => {
+        if (r) {
+          if (r.isLogged) {
+            localStorage.setItem("user", JSON.stringify(r));
+            return dispatch(loginSuccess(r));
+          } else {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            return dispatch(loginFail());
+          }
         }
-      }
-    });
+      });
+    } catch (error) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      return dispatch(loginFail());
+    }
   };
 };
 export default UserAction;

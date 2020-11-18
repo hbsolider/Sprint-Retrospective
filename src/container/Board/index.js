@@ -8,6 +8,8 @@ import {
   updateBoardRequest,
   updateBoard,
   changeIndexCard,
+  setData,
+  fetchBoardWithOutLoading,
 } from "../../redux/Board/Board.action";
 import { useParams } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -34,6 +36,7 @@ function ViewBoard(props) {
   const [title, setTitle] = useState(null);
   const param = useParams();
   const color = ["rgb(156,39,176)", "rgb(0,150,136)", "rgb(233,30,99)"];
+
   const fetchBoardData = () => {
     props.fetchBoardData(param.boardId);
   };
@@ -50,6 +53,7 @@ function ViewBoard(props) {
       param.boardId
     );
   };
+ 
   const requestEdit = () => {
     props.updateBoardRequest();
   };
@@ -67,6 +71,7 @@ function ViewBoard(props) {
     props.updateBoardRequest();
   };
   useEffect(fetchBoardData, []);
+  
   return (
     <>
       <Control>
@@ -163,8 +168,14 @@ const mapDispatchToProps = (dispatch) => {
     updateBoard: ({ _id, title }) => {
       dispatch(updateBoard({ _id, title }));
     },
-    changeIndexCard: (source, destination, cardId,boardId) => {
-      dispatch(changeIndexCard(source, destination, cardId,boardId));
+    changeIndexCard: (source, destination, cardId, boardId) => {
+      dispatch(changeIndexCard(source, destination, cardId, boardId));
+    },
+    setData: (data) => {
+      dispatch(setData(data));
+    },
+    fetchBoardWithOutLoading: (boardId) => {
+      dispatch(fetchBoardWithOutLoading(boardId));
     },
   };
 };

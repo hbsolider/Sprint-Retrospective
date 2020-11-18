@@ -56,7 +56,7 @@ const ListBoard = (props) => {
     props.fetchBoard()
   };
   const onShare =(_id)=>{
-    const url = `${window.location.href}/board/${_id}`
+    const url = `${window.location.href}board/${_id}`
     copy(url)
     props.publicBoard(_id)
   }
@@ -86,7 +86,7 @@ const ListBoard = (props) => {
         <Input onChange={onChange} />
       </Modal>
       {props.listBoard.map((e, i) => (
-        <Board {...e} key={i} onDelete={()=>onDelete(e._id)} onShare={()=>onShare(e._id)}/>
+        <Board Public={e.public} {...e} key={i} onDelete={()=>onDelete(e._id)} onShare={()=>onShare(e._id)}/>
       ))}
     </List>
   );

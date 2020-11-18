@@ -28,7 +28,7 @@ const HeaderColumn = ({ color, width, title, onClick }) => {
       </ColumnName>
 
       <Button
-        style={{ width: "100%", color }}
+        style={{ width: "100%",color }}
         icon={<PlusOutlined />}
         onClick={onClick}
       ></Button>

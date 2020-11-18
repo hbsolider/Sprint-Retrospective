@@ -6,25 +6,14 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import Dashboard from "../container/Dashboard";
-import Header from "../container/Header";
 import User from "../container/User";
 import Board from "../container/Board";
 import { connect } from "react-redux";
 import Navbar from "./Navbar";
 import UserAction from "../redux/User/User.action";
 function AppRouter(props) {
-  // useEffect(() => {
-  //   fetch("/user/")
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       console.log(res);
-  //       props.getUser(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // },[]);
   useEffect(props.getUser, []);
+
   return (
     <BrowserRouter>
       <Navbar />
@@ -101,7 +90,6 @@ const ProtectedRoute = ({
           <>
             {inMain ? (
               <div className="main">
-                {haveHeader && <Header />}
                 <Component to={to} {...props} />
               </div>
             ) : (

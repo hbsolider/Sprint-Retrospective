@@ -2,6 +2,12 @@ import BOARD from "./constants";
 import BoardApi from "../../services/BoardAPI";
 import CardApi from "../../services/CardAPI";
 import { message } from "antd";
+const setData = (data) => {
+  const fetch = (data) => ({ type: BOARD.FETCH, payload: data });
+  return async (dispatch) => {
+    dispatch(fetch(data));
+  };
+};
 const fetchBoard = () => {
   const fetch = (data) => ({ type: BOARD.FETCH, payload: data });
   return async (dispatch) => {
@@ -34,8 +40,8 @@ const fetchBoardWithOutLoading = (boardId) => {
   return async (dispatch) => {
     await BoardApi.fetchDataApi(boardId).then((data) => {
       if (data) {
-        dispatch(fetchData(data.column));
         dispatch(setCurrentBoard({ _id: boardId, title: data.title }));
+        dispatch(fetchData(data.column));
       }
     });
   };
@@ -89,7 +95,7 @@ const addCardCancelRequest = (index) => {
 };
 const addCard = (index, { columnId, title }, boardId) => {
   const success = () => {
-      message.success("Add card success");
+    message.success("Add card success");
     return { type: BOARD.ADD_CARD_SUCCESS, payload: index };
   };
   const fail = () => {
@@ -97,7 +103,7 @@ const addCard = (index, { columnId, title }, boardId) => {
     return { type: BOARD.ADD_CARD_FAILURE, payload: index };
   };
   return async (dispatch) => {
-    message.loading("Loading...")
+    message.loading("Loading...");
     try {
       await CardApi.createCard({ columnId, title }).then((r) => {
         if (r) {
@@ -125,10 +131,10 @@ const updateCard = ({ _id, title }, boardId) => {
   };
   return async (dispatch) => {
     try {
-      await CardApi.update({ _id, title }).then((r) => {
+      await CardApi.update({ _id, title }).then(async (r) => {
         if (r) {
-          dispatch(updateSuccess());
           dispatch(fetchBoardWithOutLoading(boardId));
+          return dispatch(updateSuccess());
         }
       });
     } catch (error) {
@@ -150,12 +156,12 @@ const deleteCard = ({ _id }, columnId, boardId) => {
     };
   };
   return async (dispatch) => {
-    message.loading("Action in progress..")
+    message.loading("Action in progress..", 1);
     try {
       return await CardApi.delete({ _id, columnId }).then((r) => {
         if (r) {
-          dispatch(deleteSuccess());
-          return dispatch(fetchBoardWithOutLoading(boardId));
+          dispatch(fetchBoardWithOutLoading(boardId));
+          return dispatch(deleteSuccess());
         }
 
         dispatch(deleteFail());
@@ -231,46 +237,47 @@ const changeIndexCard = (source, destination, cardId, boardId) => {
   const { sourceId, sourceIndex } = source;
   const { desId, desIndex } = destination;
   return async (dispatch, getState) => {
-    if (sourceId === desId) {
-      if (sourceIndex !== desIndex) {
-        let column = Object.assign({}, getState().board.column);
-        let tempColumn = [];
-        Object.keys(column).forEach((e) => {
-          if (column[e]._id === sourceId) tempColumn.push(column[e].card);
-        });
-        let card = tempColumn[0];
-        let t = card[sourceIndex];
-        card[sourceIndex] = card[desIndex];
-        card[desIndex] = t;
-      }
-    } else {
-      let col = [...getState().board.column];
-      const colS = col.filter((e) => {
-        if (e._id === sourceId) return e.card;
-        return null;
-      });
-      const colD = col.filter((e) => {
-        if (e._id === desId) {
-          return e.card;
+    try {
+      let src = [];
+      let des = [];
+      if (sourceId === desId) {
+        if (sourceIndex !== desIndex) {
+          const listCard = [...getState().board.column].filter(
+            (e) => e._id === sourceId
+          )[0].card;
+          const sc = listCard[sourceIndex];
+          listCard.splice(sourceIndex, 1);
+          listCard.splice(desIndex, 0, sc);
+          des = listCard.map((e) => e._id);
         }
-        return null;
-      });
-      const cardS = colS[0].card;
-      const cardD = colD[0].card;
-      let a = cardS.splice(sourceIndex, 1);
-      cardD.splice(desIndex, 0, a[0]);
-    }
-    await CardApi.changeColumnAndIndex({
-      sourceId,
-      sourceIndex,
-      desId,
-      desIndex,
-      cardId,
-    }).then((r) => {
-      if (!r) {
-        dispatch(fetchBoardWithOutLoading(boardId));
+      } else {
+        let col = [...getState().board.column];
+        const colS = col.filter((e) => {
+          if (e._id === sourceId) return e.card;
+          return null;
+        });
+        const colD = col.filter((e) => {
+          if (e._id === desId) {
+            return e.card;
+          }
+          return null;
+        });
+        const cardS = colS[0].card;
+        const cardD = colD[0].card;
+        let a = cardS.splice(sourceIndex, 1);
+        cardD.splice(desIndex, 0, a[0]);
+        src = cardS;
+        des = cardD;
       }
-    });
+      await CardApi.changeColumnAndIndex({
+        sourceId,
+        desId,
+        sourceOrderCard: src,
+        desOrderCard: des,
+      });
+    } catch (error) {
+      dispatch(fetchBoardWithOutLoading(boardId));
+    }
   };
 };
 export {
@@ -289,4 +296,6 @@ export {
   updateBoardRequest,
   setCurrentBoard,
   deleteBoard,
+  fetchBoardWithOutLoading,
+  setData,
 };

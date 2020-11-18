@@ -36,18 +36,16 @@ CardApi.delete = async ({ _id, columnId }) => {
 CardApi.changeColumnAndIndex = async ({
   sourceId,
   desId,
-  cardId,
-  sourceIndex,
-  desIndex,
+  sourceOrderCard,
+  desOrderCard,
 }) => {
   try {
     return await axios
       .post(URL + "/changeIndex", {
         sourceId,
         desId,
-        cardId,
-        sourceIndex,
-        desIndex,
+        sourceOrderCard,
+        desOrderCard,
       })
       .then((r) => {
         if (r) {

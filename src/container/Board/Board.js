@@ -10,11 +10,11 @@ import {
 
 function Board({
   dayCreated,
-  cardAmount,
   _id,
   setCurrentBoard,
   onDelete,
   onShare,
+  Public,
   ...props
 }) {
   return (
@@ -55,7 +55,7 @@ function Board({
             </Space>
           </Col>
           <Col span={10} style={{ textAlign: "end" }}>
-            {cardAmount || "process"}
+            {Public?"Public":"Private"}
           </Col>
         </Row>
       </Card>

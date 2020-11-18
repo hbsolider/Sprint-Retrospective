@@ -9,3 +9,10 @@ body{
 .main{
     padding: 0px 100px;
 }
+.button{
+    transition: all 0.3s ease-in;
+    cursor: pointer;
+}
+.button:hover{
+    transform: scale(1.1);
+}

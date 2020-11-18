@@ -10,11 +10,13 @@ import { Input, Tooltip } from "antd";
 const Layout = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 8px 8px;
-  background-color: ${(props) => props.color || "white"};
+  padding: 8px 15px;
+  background-color: ${(props) => props.color || "black"};
   color: white;
   min-height: 60px;
   margin-top: 8px;
+  border-radius:3px;
+  font-size:1.05rem;
 `;
 const Coll = styled.div`
   display: flex;
