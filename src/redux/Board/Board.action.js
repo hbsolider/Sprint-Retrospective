@@ -2,6 +2,7 @@ import BOARD from "./constants";
 import BoardApi from "../../services/BoardAPI";
 import CardApi from "../../services/CardAPI";
 import { message } from "antd";
+import socket from "../../services/Socket";
 const setData = (data) => {
   const fetch = (data) => ({ type: BOARD.FETCH, payload: data });
   return async (dispatch) => {
@@ -107,6 +108,7 @@ const addCard = (index, { columnId, title }, boardId) => {
     try {
       await CardApi.createCard({ columnId, title }).then((r) => {
         if (r) {
+          socket.emit("client-change", "ok");
           dispatch(success());
           dispatch(fetchBoardWithOutLoading(boardId));
         }
@@ -133,6 +135,7 @@ const updateCard = ({ _id, title }, boardId) => {
     try {
       await CardApi.update({ _id, title }).then(async (r) => {
         if (r) {
+          socket.emit("client-change", "ok");
           dispatch(fetchBoardWithOutLoading(boardId));
           return dispatch(updateSuccess());
         }
@@ -144,6 +147,7 @@ const updateCard = ({ _id, title }, boardId) => {
 };
 const deleteCard = ({ _id }, columnId, boardId) => {
   const deleteSuccess = () => {
+    socket.emit("client-change", "ok");
     message.success("Delete card success!");
     return {
       type: BOARD.DELETE_CARD,
@@ -180,6 +184,8 @@ const updateBoardRequest = () => {
 };
 const updateBoard = ({ _id, title }) => {
   const updateSuccess = () => {
+    socket.emit("client-change", "ok");
+
     message.success("Update board title success!", 0.5).then(() => {
       message.loading("Waiting refesh data ...", 1.5);
     });
@@ -274,6 +280,10 @@ const changeIndexCard = (source, destination, cardId, boardId) => {
         desId,
         sourceOrderCard: src,
         desOrderCard: des,
+      }).then((r) => {
+        if (r) {
+          socket.emit("client-change", "ok");
+        }
       });
     } catch (error) {
       dispatch(fetchBoardWithOutLoading(boardId));

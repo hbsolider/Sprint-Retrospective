@@ -13,10 +13,10 @@ UserAPI.login = async ({ username, password }) => {
       throw new Error({ err });
     });
 };
-UserAPI.register = async ({ username, password, email }) => {
+UserAPI.register = async ({ username, password, email,displayName }) => {
   try {
     return await axios
-      .post(apiUrl + "/", { username, password, email })
+      .post(apiUrl + "/", { username, password, email,displayName })
       .then((r) => {
         if (r) return r.data;
       });

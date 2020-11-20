@@ -31,7 +31,7 @@ UserAction.login = ({ username, password }) => {
       });
   };
 };
-UserAction.register = ({ username, password, email }) => {
+UserAction.register = ({ username, password, email,displayName }) => {
   const request = () => {
     return { type: USER.REGISTER_REQUEST };
   };
@@ -46,11 +46,12 @@ UserAction.register = ({ username, password, email }) => {
   return async (dispatch) => {
     dispatch(request());
     try {
-      await UserApi.register({ username, password, email }).then((r) => {
+      await UserApi.register({ username, password, email,displayName }).then((r) => {
         if (!r) return dispatch(failure());
         dispatch(success());
       });
     } catch (error) {
+      console.log(error)
       dispatch(failure);
     }
   };

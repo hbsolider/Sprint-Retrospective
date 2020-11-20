@@ -18,8 +18,8 @@ const reducerUser = (state = initialState, action) => {
         loggedIn: action.payload.isLogged,
       };
     case USER.LOGIN_SUCCESS:
+      state.loggedIn=true;
       return {
-        loggedIn: true,
         user: action.payload,
         loggingIn: false,
         ...state,

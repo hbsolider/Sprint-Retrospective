@@ -9,18 +9,11 @@ import {
   LockOutlined,
   FacebookOutlined,
   GoogleOutlined,
+  PicRightOutlined,
+  LinkOutlined,
 } from "@ant-design/icons";
 const { Title } = Typography;
 
-const LoginForm = styled.div`
-  width: 350px;
-  background-color: white;
-  -webkit-box-shadow: 0px 3px 15px -6px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 3px 15px -6px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 3px 15px -6px rgba(0, 0, 0, 0.75);
-  border-radius: 2px;
-  padding: 20px 20px;
-`;
 const Center = styled.div`
   min-height: 80vh;
   display: flex;
@@ -34,14 +27,18 @@ function LoginOrRegister({ isLogin, ...props }) {
       props.login({ username, password });
     }
   };
-  const onFinishRegister = ({ username, password, email }) => {
-    props.register({ username, password, email });
+  const onFinishRegister = (e) => {
+    props.register(e);
   };
   const facebookLogin = () => {
-    window.location = `${process.env.REACT_APP_API_URL||'http://localhost:5000'}/api/user/auth/facebook`;
+    window.location = `${
+      process.env.REACT_APP_API_URL || "http://localhost:5000"
+    }/api/user/auth/facebook`;
   };
   const googleLogin = () => {
-    window.location = `${process.env.REACT_APP_API_URL||'http://localhost:5000'}/api/user/auth/google`;
+    window.location = `${
+      process.env.REACT_APP_API_URL || "http://localhost:5000"
+    }/api/user/auth/google`;
   };
   const renderLogin = () => {
     return (
@@ -108,6 +105,13 @@ function LoginOrRegister({ isLogin, ...props }) {
               </Button>
             </Form.Item>
           </Form.Item>
+          <Form.Item>
+            <Link to="/user/register">
+              <Button type="dashed" style={{ width: "100%" }} danger>
+                Register
+              </Button>
+            </Link>
+          </Form.Item>
         </Form>
       </Center>
     );
@@ -115,72 +119,93 @@ function LoginOrRegister({ isLogin, ...props }) {
   const renderRegister = () => {
     return (
       <Center>
-        <LoginForm>
-          <div>
-            <Title level={2} style={{ textAlign: "center" }}>
-              Register
-            </Title>
-          </div>
-          <Form
-            onFinish={onFinishRegister}
-            layout="vertical"
-            size="middle"
-            style={{
-              display: "flext",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%",
-            }}
-            requiredMark={false}
+        <Title level={4} style={{ textAlign: "center" }}>
+          Welcome Register
+        </Title>
+        <Form
+          name="normal_login"
+          initialValues={{ remember: true }}
+          onFinish={onFinishRegister}
+        >
+          <Form.Item
+            name="displayName"
+            rules={[{ required: true, message: "Please input your Username!" }]}
           >
-            <Form.Item
-              label="Username"
-              name="username"
-              rules={[
-                { required: true, message: "Please input your username!" },
-              ]}
+            <Input
+              prefix={<PicRightOutlined />}
+              placeholder="Input your name here"
+            />
+          </Form.Item>
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Username!" }]}
+          >
+            <Input
+              prefix={<UserOutlined />}
+              placeholder="Input your username"
+            />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input prefix={<LinkOutlined />} placeholder="Input your email" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input
+              prefix={<LockOutlined />}
+              type="password"
+              placeholder="Input your password"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="register-form-button"
+              style={{ width: "100%" }}
             >
-              <Input size="middle" />
-            </Form.Item>
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                { required: true, message: "Please input your email!" },
-                {},
-              ]}
-            >
-              <Input size="middle" />
-            </Form.Item>
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                { required: true, message: "Please input your password!" },
-              ]}
-            >
-              <Input type="password" size="middle" />
-            </Form.Item>
-            <Form.Item>
+              Register
+            </Button>
+          </Form.Item>
+          <Divider orientation="center">Or</Divider>
+          <Form.Item>
+            <Form.Item style={{ display: "inline-block", width: "calc(50%)" }}>
               <Button
-                htmlType="submit"
+                onClick={googleLogin}
                 style={{ width: "100%" }}
                 type="primary"
-                loading={props.user.registering}
+                danger
               >
-                Register
+                <GoogleOutlined />
               </Button>
             </Form.Item>
-            <div style={{ textAlign: "center", marginBottom: "10px" }}>
-              If you have account
-            </div>
+            <Form.Item style={{ display: "inline-block", width: "calc(50%)" }}>
+              <Button
+                onClick={facebookLogin}
+                style={{ width: "100%" }}
+                type="default"
+              >
+                <FacebookOutlined style={{ color: "rgb(24,144,255)" }} />
+              </Button>
+            </Form.Item>
+          </Form.Item>
+          <Form.Item>
             <Link to="/user">
-              <Form.Item>
-                <Button style={{ width: "100%" }}>Login</Button>
-              </Form.Item>
+              <Button
+                type="ghost"
+                className="login-form-button"
+                style={{ width: "100%" }}
+              >
+                Go to login
+              </Button>
             </Link>
-          </Form>
-        </LoginForm>
+          </Form.Item>
+        </Form>
       </Center>
     );
   };
@@ -202,8 +227,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: ({ username, password }) =>
       dispatch(userAction.login({ username, password })),
-    register: ({ username, password, email }) => {
-      dispatch(userAction.register({ username, password, email }));
+    register: ({ username, password, email,displayName }) => {
+      dispatch(userAction.register({ username, password, email,displayName }));
     },
   };
 };

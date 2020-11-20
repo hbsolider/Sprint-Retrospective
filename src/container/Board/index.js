@@ -13,6 +13,7 @@ import {
 } from "../../redux/Board/Board.action";
 import { useParams } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
+import socket from '../../services/Socket'
 const { Title } = Typography;
 
 const CoverColumn = styled.div`
@@ -37,9 +38,14 @@ function ViewBoard(props) {
   const param = useParams();
   const color = ["rgb(156,39,176)", "rgb(0,150,136)", "rgb(233,30,99)"];
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchBoardData = () => {
     props.fetchBoardData(param.boardId);
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchBoard =()=>{
+    props.fetchBoardWithOutLoading(param.boardId);
+  }
   const dragEnd = (e) => {
     const { source, destination, draggableId } = e;
     if (destination === null) return;
@@ -71,7 +77,14 @@ function ViewBoard(props) {
     props.updateBoardRequest();
   };
   useEffect(fetchBoardData, []);
-  
+  useEffect(()=>{
+    socket.on('server-send',data=>{
+      console.log(data)
+      fetchBoard()
+    })
+
+  },[fetchBoard,param]);
+
   return (
     <>
       <Control>
